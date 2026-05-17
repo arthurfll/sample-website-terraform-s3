@@ -1,3 +1,6 @@
+variable "aws_region" {}
+variable "bucket_name" {}
+
 terraform {
   required_version = ">= 1.13.0"
 
@@ -10,7 +13,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
 
   default_tags {
     tags = {
@@ -20,5 +23,6 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "s3_bucket_1" {
-  bucket = "obfiusep23-81cdahpud"
+  bucket = var.bucket_name
 }
+
