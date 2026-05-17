@@ -4,15 +4,15 @@ This project automates the deployment of a simple static website to AWS S3 using
 
 When a push is made to the `main` branch, the GitHub Actions pipeline:
 
-* Creates an S3 bucket with Terraform
-* Uploads the `index.html` file from the `website` folder
-* Configures the bucket for static website hosting
+- Creates an S3 bucket with Terraform
+- Uploads the `index.html` file from the `website` folder
+- Configures the bucket for static website hosting
 
 ## Technologies
 
-* Terraform
-* GitHub Actions
-* AWS S3
+- Terraform
+- GitHub Actions
+- AWS S3
 
 ## Project Structure
 
@@ -25,14 +25,14 @@ When a push is made to the `main` branch, the GitHub Actions pipeline:
 │   └── main.tf
 ├── website
 │   └── index.html
-└── readme
+└── README.md
 ```
 
 ## Requirements
 
-* AWS account
-* GitHub repository
-* AWS credentials with permission to manage S3 buckets
+- AWS account
+- GitHub repository
+- AWS credentials with permission to manage S3 buckets
 
 ## Configuration
 
@@ -40,16 +40,20 @@ When a push is made to the `main` branch, the GitHub Actions pipeline:
 
 Go to your GitHub repository:
 
-`Settings > Secrets and variables > Actions`
+```
+Settings > Secrets and variables > Actions
+```
 
 Add the following secrets:
 
-* `AWS_ACCESS_KEY_ID`
-* `AWS_SECRET_ACCESS_KEY`
+| Secret | Description |
+|---|---|
+| `AWS_ACCESS_KEY_ID` | Your AWS access key ID |
+| `AWS_SECRET_ACCESS_KEY` | Your AWS secret access key |
 
 ### 2. Change the Bucket Name
 
-Update the bucket name in:
+Update the bucket name in the following files:
 
 #### `terraform/main.tf`
 
@@ -84,11 +88,14 @@ After the pipeline finishes, the website will be available through the S3 static
 
 ## Notes
 
-* Bucket names must be globally unique in AWS
-* If the bucket already exists, Terraform may fail depending on ownership and configuration
-* The AWS credentials used must have permissions for:
+> **Bucket names must be globally unique in AWS.**
 
-  * `s3:CreateBucket`
-  * `s3:PutObject`
-  * `s3:PutBucketWebsite`
-  * `s3:PutBucketPolicy`
+- If the bucket already exists, Terraform may fail depending on ownership and configuration
+- The AWS credentials used must have the following permissions:
+
+| Permission | Description |
+|---|---|
+| `s3:CreateBucket` | Create the S3 bucket |
+| `s3:PutObject` | Upload files to the bucket |
+| `s3:PutBucketWebsite` | Configure static website hosting |
+| `s3:PutBucketPolicy` | Apply bucket access policy |
