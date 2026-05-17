@@ -19,23 +19,32 @@ jobs:
         working-directory: ./terraform
 
     steps:
-      - name: Checkout do repositório
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Instalar Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Verificar versão do Terraform
-        run: terraform version
+      - name: Instalar AWS CLI
+        run: sudo apt-get update && sudo apt-get install awscli -y
 
-      - name: Inicializar Terraform
+      - name: Verificar identidade AWS
+        run: aws sts get-caller-identity
+
+      - name: Listar arquivos
+        run: ls -la
+
+      - name: Terraform Init
         run: terraform init
 
-      - name: Validar Terraform
+      - name: Terraform Validate
         run: terraform validate
 
-      - name: Planejar infraestrutura
+      - name: Terraform Plan
         run: terraform plan
 
-      - name: Aplicar infraestrutura
+      - name: Terraform Apply
         run: terraform apply -auto-approve
+
+      - name: Listar buckets S3
+        run: aws s3 ls
