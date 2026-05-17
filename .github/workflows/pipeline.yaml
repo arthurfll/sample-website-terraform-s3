@@ -9,11 +9,6 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
-      AWS_DEFAULT_REGION: us-east-1
-
     defaults:
       run:
         working-directory: ./terraform
@@ -22,17 +17,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Instalar Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Instalar AWS CLI
-        run: sudo apt-get update && sudo apt-get install awscli -y
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_PRIVATE_KEY }}
+          aws-region: us-east-1
 
       - name: Verificar identidade AWS
         run: aws sts get-caller-identity
 
-      - name: Listar arquivos
-        run: ls -la
+      - name: Instalar Terraform
+        uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
         run: terraform init
@@ -46,5 +42,5 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
 
-      - name: Listar buckets S3
+      - name: Listar buckets
         run: aws s3 ls
