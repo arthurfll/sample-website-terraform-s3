@@ -1,6 +1,3 @@
-variable "aws_region" {}
-variable "bucket_name" {}
-
 terraform {
   required_version = ">= 1.13.0"
 
@@ -11,6 +8,9 @@ terraform {
     }
   }
 }
+
+variable "aws_region" {}
+variable "bucket_name" {}
 
 provider "aws" {
   region = var.aws_region
@@ -25,4 +25,3 @@ provider "aws" {
 resource "aws_s3_bucket" "s3_bucket_1" {
   bucket = var.bucket_name
 }
-
