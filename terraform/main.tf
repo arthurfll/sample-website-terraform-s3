@@ -1,6 +1,3 @@
-variable "aws_region" {}
-variable "bucket_name" {}
-
 terraform {
   required_version = ">= 1.13.0"
 
