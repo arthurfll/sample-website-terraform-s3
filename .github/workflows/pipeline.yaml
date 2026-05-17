@@ -38,10 +38,10 @@ jobs:
 
       - name: Terraform Import
         run: |
-          terraform import aws_s3_bucket.s3_bucket_1 ghwroncnjiwhauip13472 || true
-          terraform import aws_s3_bucket_public_access_block.s3_bucket_1 ghwroncnjiwhauip13472 || true
-          terraform import aws_s3_bucket_policy.s3_bucket_1 ghwroncnjiwhauip13472 || true
-          terraform import aws_s3_bucket_website_configuration.s3_bucket_1 ghwroncnjiwhauip13472 || true
+          terraform import aws_s3_bucket.s3_bucket_1 {{BUCKET_NAME}} || true
+          terraform import aws_s3_bucket_public_access_block.s3_bucket_1 {{BUCKET_NAME}} || true
+          terraform import aws_s3_bucket_policy.s3_bucket_1 {{BUCKET_NAME}} || true
+          terraform import aws_s3_bucket_website_configuration.s3_bucket_1 {{BUCKET_NAME}} || true
 
       - name: Terraform Plan
         run: terraform plan
@@ -77,4 +77,6 @@ jobs:
 
       - name: Upload index.html
         if: steps.check.outputs.changed == 'true'
-        run: aws s3 cp src/index.html s3://ghwroncnjiwhauip13472/index.html
+        run: aws s3 cp src/index.html s3://{{BUCKET_NAME}}/index.html
+
+

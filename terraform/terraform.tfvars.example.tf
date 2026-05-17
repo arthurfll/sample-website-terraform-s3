@@ -1,4 +1,0 @@
-# aws_region = ""
-# bucket_name = ""
-
-

@@ -20,7 +20,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "s3_bucket_1" {
-  bucket = "ghwroncnjiwhauip13472"
+  bucket = "{{BUCKET_NAME}}"
 }
 
 resource "aws_s3_bucket_public_access_block" "s3_bucket_1" {
@@ -62,3 +62,4 @@ resource "aws_s3_bucket_website_configuration" "s3_bucket_1" {
     key = "index.html"
   }
 }
+
