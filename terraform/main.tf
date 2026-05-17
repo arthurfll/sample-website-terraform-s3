@@ -1,3 +1,6 @@
+variable "aws_region" {}
+variable "bucket_name" {}
+
 terraform {
   required_version = ">= 1.13.0"
 
@@ -9,11 +12,8 @@ terraform {
   }
 }
 
-variable "aws_region" {}
-variable "bucket_name" {}
-
 provider "aws" {
-  region = var.aws_region
+  region = "us-east-1"
 
   default_tags {
     tags = {
@@ -23,5 +23,45 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "s3_bucket_1" {
-  bucket = var.bucket_name
+  bucket = "ghwroncnjiwhauip13472"
+}
+
+resource "aws_s3_bucket_public_access_block" "s3_bucket_1" {
+  bucket = aws_s3_bucket.s3_bucket_1.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_policy" "s3_bucket_1" {
+  bucket = aws_s3_bucket.s3_bucket_1.id
+
+  depends_on = [aws_s3_bucket_public_access_block.s3_bucket_1]
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "PublicReadGetObject"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "s3:GetObject"
+        Resource  = "${aws_s3_bucket.s3_bucket_1.arn}/*"
+      }
+    ]
+  })
+}
+
+resource "aws_s3_bucket_website_configuration" "s3_bucket_1" {
+  bucket = aws_s3_bucket.s3_bucket_1.id
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "index.html"
+  }
 }
