@@ -36,6 +36,13 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
+      - name: Terraform Import
+        run: |
+          terraform import aws_s3_bucket.s3_bucket_1 ghwroncnjiwhauip13472 || true
+          terraform import aws_s3_bucket_public_access_block.s3_bucket_1 ghwroncnjiwhauip13472 || true
+          terraform import aws_s3_bucket_policy.s3_bucket_1 ghwroncnjiwhauip13472 || true
+          terraform import aws_s3_bucket_website_configuration.s3_bucket_1 ghwroncnjiwhauip13472 || true
+
       - name: Terraform Plan
         run: terraform plan
 
@@ -53,7 +60,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2  # necessário para o git diff funcionar
+          fetch-depth: 2
 
       - name: Verificar se index.html foi alterado
         id: check
